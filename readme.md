@@ -1,6 +1,9 @@
 
 # Бэкенд для социальной сети
 
+## Пререквезиты
+Требуется наличие базы данных MySql с созданной базой данных social_network
+
 ## Список переменных окружения
 
 | Переменная  | Описание                              | Пример                                     |
@@ -11,8 +14,15 @@
 | BASE_URL    | Путь к апи, по умолчанию /api         | /api                                       |
 
 
+Пример запуска с maven:
+* `mvn clean`
+* `mvn build`
+При запуске передать переменные.
+
+
 Пример запуска докера с переменными:
-`sudo docker run -p 8887:8888 --env BASE_URL=/api --env DB_PASSWORD=some_pass --env DB_URL=jdbc:mysql://mysql:3306/social_network --env DB_USERNAME=root hlarchitectcourse:latest`
+`docker build <путь к Dockerfile>`
+`docker run -p 8887:8888 --env BASE_URL=/api --env DB_PASSWORD=some_pass --env DB_URL=jdbc:mysql://mysql:3306/social_network --env DB_USERNAME=root hlarchitectcourse:latest`
 
 
 
