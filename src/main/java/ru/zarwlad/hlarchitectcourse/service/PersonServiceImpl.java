@@ -21,7 +21,6 @@ import ru.zarwlad.hlarchitectcourse.entity.PersonInterest;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -129,23 +128,31 @@ public class PersonServiceImpl implements PersonService {
         List<Person> people = personDao.getAllPaged(limit, offset)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("The person list is empty, limit %d, offset %d", limit, offset)));
 
-        if (!people.isEmpty()) {
-            List<PersonInterest> personInterests = personDao.findAllInterestsOfPersonsByPersonIds(
-                            people.stream()
-                                    .map(Person::getId)
-                                    .collect(Collectors.toList()))
-                    .orElseGet(ArrayList::new);
+        if (people != null && !people.isEmpty())
+            return enrichPeopleByInterests(people);
+        else
+            return people;
+    }
 
-            people.forEach(person -> person.setInterests(
-                            personInterests.stream()
-                                    .filter(personInterest -> personInterest.getPersonId() == person.getId())
-                                    .map(PersonInterest::getInterest)
-                                    .distinct()
-                                    .collect(Collectors.toList())
-                    )
-            );
-        }
-        return people;
+    private List<Person> enrichPeopleByInterests(List<Person> people) {
+        List<Person> enrichedPersons = List.copyOf(people);
+        List<PersonInterest> personInterests = personDao.findAllInterestsOfPersonsByPersonIds(
+                        enrichedPersons.stream()
+                                .map(Person::getId)
+                                .collect(Collectors.toList()))
+                .orElseGet(ArrayList::new);
+
+        enrichedPersons.forEach(person -> {
+            List<Interest> interestList = new ArrayList<>();
+
+            personInterests.forEach(pi -> {
+                if (Objects.equals(pi.getPersonId(), person.getId()))
+                    interestList.add(pi.getInterest());
+            });
+
+            person.setInterests(interestList);
+        });
+        return enrichedPersons;
     }
 
     @Override
@@ -212,5 +219,14 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return personDao.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User with login %s has not been found", username)));
+    }
+
+    @Override
+    public List<Person> findByNameLikeAndSurnameLikePaged(String likeName, String likeSurname, Integer limit, Integer offset) {
+        List<Person> people = personDao.findByNameLikeAndSurnameLikePaged(likeName, likeSurname, limit, offset)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("The person list is empty for the search with name %s surname %s limit %d offset %d", likeName, likeSurname, limit, offset)));
+
+        if (people != null && !people.isEmpty()) return enrichPeopleByInterests(people);
+        else return people;
     }
 }

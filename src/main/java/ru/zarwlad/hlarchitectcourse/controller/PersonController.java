@@ -12,4 +12,5 @@ public interface PersonController extends Controller<PersonDto, NewPersonDto>{
     void addNewInterestToPerson(Long personId, NewInterestDto newInterestDto);
     void removeInterestFromPerson(Long personId, InterestDto interestDto);
     PersonDto findByLogin(String personLogin);
+    List<PersonDto> findByNameLikeAndSurnameLikePaged(String likeName, String likeSurname, Integer limit, Integer offset);
 }

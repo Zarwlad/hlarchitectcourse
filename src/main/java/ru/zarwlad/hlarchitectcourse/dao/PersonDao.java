@@ -13,4 +13,5 @@ public interface PersonDao extends Dao<Person> {
     Boolean removeInterestFromPerson(Long personId, Interest interest);
     Optional<Person> findByLogin(String personLogin);
     Optional<List<PersonInterest>> findAllInterestsOfPersonsByPersonIds(List<Long> personIds);
+    Optional<List<Person>> findByNameLikeAndSurnameLikePaged(String likeName, String likeSurname, Integer limit, Integer offset);
 }

@@ -1,7 +1,7 @@
--- liquibASe formatted sql
+-- liquibase formatted sql
 -- changeset vzaremba:friends_view
 
-CREATE VIEW social_network.friends_view AS
+CREATE OR REPLACE VIEW social_network.friends_view AS
 SELECT friends.id  AS id,
        person_id,
        friend_id,

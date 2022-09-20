@@ -1,6 +1,5 @@
 package ru.zarwlad.hlarchitectcourse.facade;
 
-import ru.zarwlad.hlarchitectcourse.entity.Interest;
 import ru.zarwlad.hlarchitectcourse.entity.Person;
 import ru.zarwlad.hlarchitectcourse.model.InterestDto;
 import ru.zarwlad.hlarchitectcourse.model.NewInterestDto;
@@ -14,4 +13,5 @@ public interface PersonFacade extends Facade<PersonDto, NewPersonDto, Person> {
     Boolean addNewInterestToPerson(Long personId, NewInterestDto newInterestDto);
     Boolean removeInterestFromPerson(Long personId, InterestDto interestDto);
     PersonDto findByLogin(String personLogin);
+    List<PersonDto> findByNameLikeAndSurnameLikePaged(String likeName, String likeSurname, Integer limit, Integer offset);
 }

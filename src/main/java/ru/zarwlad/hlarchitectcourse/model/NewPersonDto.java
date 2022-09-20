@@ -26,7 +26,7 @@ public class NewPersonDto {
 
     @NotNull(message = "Password cannot be null")
     @Size(min = 1, max = 255, message = "Password must be lower than 255 characters")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,255}$", message = PASSWORD_VALIDATION_MSG)
+    //@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,255}$", message = PASSWORD_VALIDATION_MSG)
     private String password;
 
     @NotNull(message = "Name cannot be null")

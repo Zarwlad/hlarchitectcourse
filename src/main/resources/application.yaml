@@ -3,6 +3,8 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 100
   liquibase:
     enabled: true
   jpa:
@@ -17,4 +19,8 @@ application:
   base-url: ${BASE_URL:/api}
 logging:
   level:
-    root: debug
+    root: error
+server:
+  tomcat:
+    threads:
+      max: 200

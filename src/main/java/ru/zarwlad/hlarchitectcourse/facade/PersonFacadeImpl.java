@@ -24,7 +24,6 @@ public class PersonFacadeImpl implements PersonFacade{
     PersonDtoMapper personDtoMapper;
     @Autowired
     PersonService personService;
-
     @Autowired
     InterestDtoMapper interestDtoMapper;
 
@@ -74,5 +73,14 @@ public class PersonFacadeImpl implements PersonFacade{
     @Override
     public PersonDto findByLogin(String personLogin) {
         return personDtoMapper.toDto(personService.findByLogin(personLogin));
+    }
+
+    @Override
+    public List<PersonDto> findByNameLikeAndSurnameLikePaged(String likeName, String likeSurname, Integer limit, Integer offset) {
+        return personService
+                .findByNameLikeAndSurnameLikePaged(likeName, likeSurname, limit, offset)
+                .stream()
+                .map(person -> personDtoMapper.toDto(person))
+                .collect(Collectors.toList());
     }
 }

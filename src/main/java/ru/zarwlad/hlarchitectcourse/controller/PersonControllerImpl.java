@@ -2,6 +2,7 @@ package ru.zarwlad.hlarchitectcourse.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("${BASE_URL}/person")
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Slf4j
 public class PersonControllerImpl implements PersonController{
     @Autowired
     PersonFacade personFacade;
@@ -85,4 +87,14 @@ public class PersonControllerImpl implements PersonController{
     public PersonDto findByLogin(@PathVariable String personLogin) {
         return personFacade.findByLogin(personLogin);
     }
+    @Override
+    @GetMapping("/by-name-and-surname")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PersonDto> findByNameLikeAndSurnameLikePaged(@RequestParam String likeName,
+                                                      @RequestParam String likeSurname,
+                                                      @RequestParam Integer limit,
+                                                      @RequestParam Integer offset){
+        return personFacade.findByNameLikeAndSurnameLikePaged(likeName, likeSurname, limit, offset);
+    }
+
 }
